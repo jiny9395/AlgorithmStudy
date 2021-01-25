@@ -10,9 +10,9 @@ typedef struct {
 
 int N, M, G;
 int A[MAX + 2][MAX + 2];	// 지도
-POS S[MAX * MAX + 2];		  // 출발지 
-POS D[MAX * MAX + 2];		  // 목적지
-POS driver;					      // 운전기사 위치
+POS S[MAX * MAX + 2];		// 출발지 
+POS D[MAX * MAX + 2];		// 목적지
+POS driver;			// 운전기사 위치
 int distSD[MAX * MAX + 2];
 
 int dy[] = { 0,0,-1,+1 };
@@ -46,7 +46,7 @@ bool driverToclient() {		// 기사가 승객에게 갈 수 있는지 판별
 	return true;
 }
 
-bool srcTodst() {			// 각 승객의 출발지에서 도착지 까지의 거리 및 갈 수 있는지 판별
+bool srcTodst() {		// 각 승객의 출발지에서 도착지 까지의 거리 및 갈 수 있는지 판별
 	int cnt = 0;
 
 	memset(distSD, -1, sizeof(distSD));
@@ -63,13 +63,13 @@ bool srcTodst() {			// 각 승객의 출발지에서 도착지 까지의 거리 
 
 		while (!q.empty()) {
 			POS cur = q.front();	q.pop();
-			if (cur.y == dst.y && cur.x == dst.x) {	// 도착지인 경우
-				distSD[i] = dist[dst.y][dst.x];		    // 출발지에서 도착지 까지의 거리 저장
+			if (cur.y == dst.y && cur.x == dst.x) {		// 도착지인 경우
+				distSD[i] = dist[dst.y][dst.x];		// 출발지에서 도착지 까지의 거리 저장
 				cnt++;
 				break;
 			}
 
-			for (int dir = 0; dir < 4; dir++) {		  // 상하좌우 탐색
+			for (int dir = 0; dir < 4; dir++) {		// 상하좌우 탐색
 				int ny = cur.y + dy[dir];
 				int nx = cur.x + dx[dir];
 
@@ -101,9 +101,9 @@ int Solve() {
 
 			for (int i = 0; i < size; i++) {
 				POS cur = q.front();	q.pop();
-				if (A[cur.y][cur.x] < 0) {	// 승객의 위치
+				if (A[cur.y][cur.x] < 0) {		// 승객의 위치
 					if (client.y == 0 && client.x == 0)		client = cur;
-					else if (client.y > cur.y)						client = cur;
+					else if (client.y > cur.y)			client = cur;
 					else if (client.y == cur.y && client.x > cur.x) client = cur;
 				}
 
@@ -119,16 +119,16 @@ int Solve() {
 			}
 
 			if (client.y && client.x) {
-				int idx = -A[client.y][client.x];	  // 승객 idx
+				int idx = -A[client.y][client.x];	// 승객 idx
 				int d1 = dist[client.y][client.x];	// 택시 기사 위치 ~ 출발지
-				int d2 = distSD[idx];				        // 출발지 ~ 목적지
+				int d2 = distSD[idx];			// 출발지 ~ 목적지
 
-				if (d1 + d2 > G) return -1;			    // 연료가 부족한 경우, 실패
-				else {								              // 성공
+				if (d1 + d2 > G) return -1;		// 연료가 부족한 경우, 실패
+				else {					// 성공
 					G -= d1 + d2;
 					G += d2 * 2;
-					driver = D[idx];				          // 택시 기사 위치, 승객의 도착지 위치로 변경
-					A[S[idx].y][S[idx].x] = 0;		    // 지도에서 승객 위치 제거
+					driver = D[idx];		// 택시 기사 위치, 승객의 도착지 위치로 변경
+					A[S[idx].y][S[idx].x] = 0;	// 지도에서 승객 위치 제거
 				}
 				break;
 			}
