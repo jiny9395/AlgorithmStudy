@@ -151,8 +151,8 @@ int main() {
 	}
 
 	if (driverToclient()) {
-		if(srcTodst()) printf("%d\n", Solve()); 
-		else			     printf("-1");
+		if(srcTodst()) 	printf("%d\n", Solve()); 
+		else		printf("-1");
 	}
 	else printf("-1\n");
 }
